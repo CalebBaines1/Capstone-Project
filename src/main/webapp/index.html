@@ -5,13 +5,24 @@
     <title>Capstone Project</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="nutrition.js"></script>
   </head>
   <body>
 		<h1>Capstone Project</h1>
 		<br>
 		<br>
 		<h2>Calorie Count</h2>
-		<div id="calorie-count-container"></div>
+		<div id="calorie-count-container">
+		    <div id = "SearchJSON">
+                <input type="text" id="foodInput" name="foodInput" placeholder="Input food here..." required>
+                <button onclick="foodSearch()">Retrieve JSON for search</button>
+		    </div>
+            <div id = "PredeterminedFoods">
+                <button onclick="getShake()">Click to fetch JSON for a McDonald's medium vanilla shake!</button>
+                <button onclick="getFries()">Click to fetch JSON for Five Guys' litte fries!</button>
+                <button onclick="getChicken()">Click to fetch JSON for a common grilled chicken breast!</button>
+            </div>
+        </div>
 		<br>
 		<h2>Availability Map</h2>
 		<div id="avail-map-container"></div>
