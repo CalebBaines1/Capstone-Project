@@ -1,5 +1,6 @@
+var map_key = config.MAP_Key
 var script = document.createElement('script');
-script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCac_98hdUdWBax-kVDH-SwBNGHkxHhiOU&callback=initMap';
+script.src = 'https://maps.googleapis.com/maps/api/js?key=' + map_key + '&callback=initMap';
 script.defer = true;
 script.async = true;
 
