@@ -1,10 +1,15 @@
-//Use user input to search for possible foods
+var apiID = config.x-app-id;
+var apiKey = config.x-app-key;
+
+/**
+ * Use user input to search for possible foods
+ */
 function foodSearch() {
     let userfood = document.getElementById('foodInput').value;
     let url = 'https://trackapi.nutritionix.com/v2/search/instant?query=' + userfood;
     let myHeaders = new Headers({ 
-        'x-app-id': '85f8ef5f',
-        'x-app-key': '7dac3e04e347a6dc70bfd89e404501d3'
+        'x-app-id': apiID,
+        'x-app-key': apiKey
     });
 
     fetch(url, {
@@ -16,13 +21,14 @@ function foodSearch() {
     })
 }
 
-
-//retrieve nutrition info for McDonald's medium vanilla shake
+/**
+ * retrieve nutrition info for McDonald's medium vanilla shake
+ */
 function getShake() {
     let url = 'https://trackapi.nutritionix.com/v2/search/item?nix_item_id=513fc9e73fe3ffd4030011a4';
     let myHeaders = new Headers({
-        'x-app-id': '85f8ef5f',
-        'x-app-key': '7dac3e04e347a6dc70bfd89e404501d3'
+        'x-app-id': apiID,
+        'x-app-key': apiKey
     });
 
     fetch(url, {
@@ -34,12 +40,14 @@ function getShake() {
     })
 }
 
-//retrieve nutrition info for Five Guys' little fries
+/**
+ * retrieve nutrition info for Five Guys' little fries
+ */
 function getFries() {
     let url = 'https://trackapi.nutritionix.com/v2/search/item?nix_item_id=521b95cb4a56d006d578b9b0';
     let myHeaders = new Headers({
-        'x-app-id': '85f8ef5f',
-        'x-app-key': '7dac3e04e347a6dc70bfd89e404501d3'
+        'x-app-id': apiID,
+        'x-app-key': apiKey
     });
 
     fetch(url, {
@@ -51,14 +59,15 @@ function getFries() {
     })
 }
 
-
-//retrieve nutrition info for typical chicken breast 
+/**
+ * retrieve nutrition info for typical chicken breast.
+ */
 function getChicken() {
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients';
     let myHeaders = new Headers({
         'content-type': 'application/json',
-        'x-app-id': '85f8ef5f',
-        'x-app-key': '7dac3e04e347a6dc70bfd89e404501d3',
+        'x-app-id': apiID,
+        'x-app-key': apiKey,
         'x-remote-user-id': '0'
     });
     let myBody = '{"query":"grilled chicken breast"}'
