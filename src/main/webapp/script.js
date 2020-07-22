@@ -1,4 +1,4 @@
-var map_key = config.map_key
+var map_key = config.MAP_KEY
 var script = document.createElement('script');
 script.src = 'https://maps.googleapis.com/maps/api/js?key=' + map_key + '&callback=initMap';
 script.defer = true;
