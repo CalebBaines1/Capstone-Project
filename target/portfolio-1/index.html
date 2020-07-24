@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Capstone Project</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="config.js"></script>
     <script src="script.js"></script>
   </head>
@@ -14,30 +13,17 @@
 		<br>
 		<h2>Calorie Count</h2>
 		<div id="calorie-count-container">
-		    <div id = "SearchJSON">
-                <input type="text" id="foodInput" name="foodInput" placeholder="Input food here..." required>
-                <button onclick="foodSearch()">Retrieve JSON for search</button>
-		    </div>
-            <div id = "PredeterminedFoods">
-                <button onclick="getShake()">Click to fetch JSON for a McDonald's medium vanilla shake!</button>
-                <button onclick="getFries()">Click to fetch JSON for Five Guys' litte fries!</button>
-                <button onclick="getChicken()">Click to fetch JSON for a common grilled chicken breast!</button>
-            </div>
-            <div class = "container mt-5">
-                <div class = "row">
-                    <div class = "col-md-6 m-auto">
-                        <h3 class = "text-center mb-3">
-                            Food Search
-                        </h3>
-                        <div class = "form-group">
-                            <input type = "text" id = "search" class = "form-control form-control-lg" placeholder = "Search for food"/>
-                        </div>
-                        <div id = "match-list"></div>
-                    </div>
+            <div id = "food-autocomplete">
+                <h3>Food Search</h3>
+                <div class = "form-group">
+                    <input type = "text" id = "search" class = "form-control form-control-lg" placeholder = "Search for food"/>
                 </div>
+                <div id = "match-list"></div>
             </div>
 		<br>
 		<h2>Availability Map</h2>
+        <input id="address" type="textbox" value="Mountain View, California" />
+        <input id="submit" type="button" value="Locate" />
 		<div id="avail-map-container"></div>
         <script src="nutrition.js"></script>
   </body>

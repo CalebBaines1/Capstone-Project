@@ -2,72 +2,26 @@ var apiID = config.NAppID;
 var apiKey = config.NAppKey;
 
 /**
- * Use user input to search for possible foods
- */
-function foodSearch() {
-    let userfood = document.getElementById('foodInput').value;
-    let url = 'https://trackapi.nutritionix.com/v2/search/instant?query=' + userfood;
-    let myHeaders = new Headers({ 
-        'x-app-id': apiID,
-        'x-app-key': apiKey
-    });
-
-    fetch(url, {
-        headers: myHeaders
-    })
-    .then((response) => response.json())
-    .then((foodOptions)  => {
-    console.log(foodOptions);
-    return foodOptions;
-    })
-}
-
-/**
- * retrieve nutrition info for McDonald's medium vanilla shake
- */
-function getShake() {
-    getBranded("513fc9e73fe3ffd4030011a4");
-}
-
-/**
- * retrieve nutrition info for Five Guys' little fries
- */
-function getFries() {
-    getBranded("521b95cb4a56d006d578b9b0");
-}
-
-/**
- * retrieve nutrition info for typical chicken breast.
- */
-function getChicken() {
-    getCommon("grilled chicken breast");
-}
-
-/**
 * Retrieve nutrition info for a branded food
  */
-function getBranded(itemID) {
+async function getBranded(itemID) {
     let url = 'https://trackapi.nutritionix.com/v2/search/item?nix_item_id=' + itemID;
     let myHeaders = new Headers({
         'x-app-id': apiID,
         'x-app-key': apiKey
     });
 
-    fetch(url, {
+    const nutritionInfo = fetch(url, {
         headers: myHeaders
     })
     .then((response) => response.json())
-    .then((calorieInfo)  => {
-    console.log(calorieInfo);
-    return calorieInfo;
-    })
+    return await nutritionInfo;
 }
- 
 
  /**
  * Retrieve nutrition info for a common food 
   */
-  function getCommon(query) {
+   async function getCommon(query) {
     let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients';
     let myHeaders = new Headers({
         'content-type': 'application/json',
@@ -77,15 +31,19 @@ function getBranded(itemID) {
     });
     let myBody = '{"query": "' + query + '"}';
 
-    fetch(url, {method: "POST", headers: myHeaders, body:myBody })
-    .then((response) => response.json())
-    .then((calorieInfo)  => {
-    console.log(calorieInfo);
-    return calorieInfo;
-    })
+    const nutritionInfo = fetch(url, {method: "POST", headers: myHeaders, body:myBody })
+    .then((response) => response.json());
+    return await nutritionInfo;
 }
 
+/**
+*Retrieve food search results from user input
+ */
 function getFoodSearchJSON(food) {
+    if (!search.value) {
+        matchList.innerHTML = '';
+        return;
+    }
     let url = 'https://trackapi.nutritionix.com/v2/search/instant?query=' + food;
     let myHeaders = new Headers({ 
         'x-app-id': apiID,
@@ -97,25 +55,56 @@ function getFoodSearchJSON(food) {
     })
     .then((response) => response.json())
     .then((foodOptions)  => {
-    console.log(foodOptions);
-    console.log(responseToArray(foodOptions));
+    addToDOM(foodOptions);
     })
 }
 
-function responseToArray(response) {
-    let ret = [];
+/**
+*Add search results to web page
+*/
+function addToDOM(response) {
+    matchList.innerHTML = '';
     for (food of response.common) {
-        ret.push(food.food_name);
+        let a = document.createElement("li");
+        a.innerText = food.food_name;
+        a.setAttribute("type", "common");
+        a.setAttribute("query", food.food_name);
+        a.setAttribute("onclick", 'printCalories(this);')
+        matchList.appendChild(a);
     }
-    for (food of response.branded){
-        ret.push(food.brand_name_item_name);
+    for (food of response.branded) {
+        let a = document.createElement("li");
+        a.innerText = food.food_name;
+        a.setAttribute("type", "branded");
+        a.setAttribute("id", food.nix_item_id);
+        a.setAttribute("onclick", 'printCalories(this);')
+        matchList.appendChild(a);
     }
-    return ret;
+}
+
+/**
+* Retrieve nutrition info for food that user clicks 
+ */
+async function printCalories(element) {
+    let type = element.getAttribute("type");
+    console.log(type);
+    if (type == "common") {
+        let query = element.getAttribute("query");
+        let nutrition = await getCommon(query)
+        console.log(nutrition);
+        let calories = nutrition.foods[0].nf_calories;
+        console.log("This item has " + calories + " calories.");
+    }
+    if (type == "branded") {
+        let id = element.getAttribute("id");
+        let nutrition = await getBranded(id);
+        console.log(nutrition);
+        let calories = nutrition.foods[0].nf_calories;
+        console.log("This item has " + calories + " calories.");
+    }
 }
 
 const search = document.getElementById('search');
 const matchList = document.getElementById('match-list');
-
-//Search JSON of food results
 
 search.addEventListener('input', () => getFoodSearchJSON(search.value));
