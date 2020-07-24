@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>Capstone Project</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="config.js"></script>
     <script src="script.js"></script>
-    <script src="nutrition.js"></script>
   </head>
   <body>
 		<h1>Capstone Project</h1>
@@ -23,9 +23,22 @@
                 <button onclick="getFries()">Click to fetch JSON for Five Guys' litte fries!</button>
                 <button onclick="getChicken()">Click to fetch JSON for a common grilled chicken breast!</button>
             </div>
-        </div>
+            <div class = "container mt-5">
+                <div class = "row">
+                    <div class = "col-md-6 m-auto">
+                        <h3 class = "text-center mb-3">
+                            Food Search
+                        </h3>
+                        <div class = "form-group">
+                            <input type = "text" id = "search" class = "form-control form-control-lg" placeholder = "Search for food"/>
+                        </div>
+                        <div id = "match-list"></div>
+                    </div>
+                </div>
+            </div>
 		<br>
 		<h2>Availability Map</h2>
 		<div id="avail-map-container"></div>
+        <script src="nutrition.js"></script>
   </body>
 </html>

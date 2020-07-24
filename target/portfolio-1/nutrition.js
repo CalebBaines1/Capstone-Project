@@ -18,6 +18,7 @@ function foodSearch() {
     .then((response) => response.json())
     .then((foodOptions)  => {
     console.log(foodOptions);
+    return foodOptions;
     })
 }
 
@@ -40,23 +41,6 @@ function getFries() {
  */
 function getChicken() {
     getCommon("grilled chicken breast");
-
-    /** 
-    let url = 'https://trackapi.nutritionix.com/v2/natural/nutrients';
-    let myHeaders = new Headers({
-        'content-type': 'application/json',
-        'x-app-id': apiID,
-        'x-app-key': apiKey,
-        'x-remote-user-id': '0'
-    });
-    let myBody = '{"query":"grilled chicken breast"}'
-
-    fetch(url, {method: "POST", headers: myHeaders, body:myBody })
-    .then((response) => response.json())
-    .then((calorieInfo)  => {
-    console.log(calorieInfo);
-    })
-    */
 }
 
 /**
@@ -75,6 +59,7 @@ function getBranded(itemID) {
     .then((response) => response.json())
     .then((calorieInfo)  => {
     console.log(calorieInfo);
+    return calorieInfo;
     })
 }
  
@@ -90,16 +75,47 @@ function getBranded(itemID) {
         'x-app-key': apiKey,
         'x-remote-user-id': '0'
     });
-
-    //let myBody = ' {"query":"grilled chicken breast"}'
-
-
-    let myBody = '{"query": "' + query + '"}'
-    console.log(myBody);
+    let myBody = '{"query": "' + query + '"}';
 
     fetch(url, {method: "POST", headers: myHeaders, body:myBody })
     .then((response) => response.json())
     .then((calorieInfo)  => {
     console.log(calorieInfo);
+    return calorieInfo;
     })
 }
+
+function getFoodSearchJSON(food) {
+    let url = 'https://trackapi.nutritionix.com/v2/search/instant?query=' + food;
+    let myHeaders = new Headers({ 
+        'x-app-id': apiID,
+        'x-app-key': apiKey
+    });
+
+    fetch(url, {
+        headers: myHeaders
+    })
+    .then((response) => response.json())
+    .then((foodOptions)  => {
+    console.log(foodOptions);
+    console.log(responseToArray(foodOptions));
+    })
+}
+
+function responseToArray(response) {
+    let ret = [];
+    for (food of response.common) {
+        ret.push(food.food_name);
+    }
+    for (food of response.branded){
+        ret.push(food.brand_name_item_name);
+    }
+    return ret;
+}
+
+const search = document.getElementById('search');
+const matchList = document.getElementById('match-list');
+
+//Search JSON of food results
+
+search.addEventListener('input', () => getFoodSearchJSON(search.value));
