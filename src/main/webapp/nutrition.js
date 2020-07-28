@@ -64,21 +64,31 @@ function getFoodSearchJSON(food) {
 */
 function addToDOM(response) {
     matchList.innerHTML = '';
+    let i = 0
     for (food of response.common) {
+        if (i == 5) {
+            break;
+        }
         let a = document.createElement("li");
         a.innerText = food.food_name;
         a.setAttribute("type", "common");
         a.setAttribute("query", food.food_name);
         a.setAttribute("onclick", 'printCalories(this);')
         matchList.appendChild(a);
+        i += 1;
     }
+    let j = 0;
     for (food of response.branded) {
+        if (j == 5) {
+            break;
+        }
         let a = document.createElement("li");
         a.innerText = food.food_name;
         a.setAttribute("type", "branded");
         a.setAttribute("id", food.nix_item_id);
         a.setAttribute("onclick", 'printCalories(this);')
         matchList.appendChild(a);
+        j += 1;
     }
 }
 

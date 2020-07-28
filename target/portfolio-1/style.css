@@ -66,8 +66,5 @@ li {
 
 li:hover,
 li:focus{
-    background: linear-gradient(to top, #ffffff, #012169);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: rgb(99, 99, 99);
 }
