@@ -18,7 +18,7 @@ script.async = true;
   document.getElementById("submit").addEventListener("click", function() {
     geocodeLocation(geocoder, map);
   });
-
+  
 }
 
 /**
