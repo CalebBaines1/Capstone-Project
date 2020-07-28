@@ -70,7 +70,7 @@ function addToDOM(response) {
             break;
         }
         let a = document.createElement("li");
-        a.innerText = food.food_name;
+        a.innerText = "Common Food: " + food.food_name;
         a.setAttribute("type", "common");
         a.setAttribute("query", food.food_name);
         a.setAttribute("onclick", 'printCalories(this);')
@@ -83,7 +83,7 @@ function addToDOM(response) {
             break;
         }
         let a = document.createElement("li");
-        a.innerText = food.food_name;
+        a.innerText = food.brand_name + " " + food.food_name;
         a.setAttribute("type", "branded");
         a.setAttribute("id", food.nix_item_id);
         a.setAttribute("onclick", 'printCalories(this);')
