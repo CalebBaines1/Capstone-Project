@@ -8,23 +8,26 @@
     <script src="script.js"></script>
   </head>
   <body>
-		<h1>Capstone Project</h1>
-		<br>
-		<br>
-		<h2>Calorie Count</h2>
-		<div id="calorie-count-container">
-            <div id = "food-autocomplete">
+        <h1>Capstone Project</h1>
+        <section id = "calorie-section">
+            <div class = "container" id="calorie-count-container">
+            <h2>Calorie Count</h2>
                 <h3>Food Search</h3>
                 <div class = "form-group">
                     <input type = "text" id = "search" class = "form-control form-control-lg" placeholder = "Search for food"/>
                 </div>
                 <div id = "match-list"></div>
             </div>
-		<br>
-		<h2>Availability Map</h2>
-        <input id="address" type="textbox" value="Mountain View, California" />
-        <input id="submit" type="button" value="Locate" />
-		<div id="avail-map-container"></div>
-        <script src="nutrition.js"></script>
+        </section>
+
+        <section id = "map section">
+            <div class = "container" id = "availability-map-container">
+                <h2>Availability Map</h2>
+                <input id="address" type="textbox" value="Mountain View, California" />
+                <input id="submit" type="button" value="Locate" />
+                <div id="avail-map-container"></div>
+            </div>
+        </section>
   </body>
+  <script src="nutrition.js"></script>
 </html>
