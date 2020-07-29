@@ -163,21 +163,8 @@ function updateCalories(element, change) {
 }
 
 /**
-* Generate chart based off user's selected food
+* Load chart based off user's selected food
  */
- function generateChart() {
-     let recommendedCalories;
-     if(document.getElementById("male-select").checked) {
-         recommendedCalories = 2500;
-         gender = "male";
-     }
-     if(document.getElementById("female-select").checked) {
-         recommendedCalories = 2000;
-         gender = "female";
-     }
-     calorieChart.innerHTML = "The selected gender is " + gender + " and that gender should eat " + recommendedCalories + " per day.";
- }
-
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(loadChart);
 
