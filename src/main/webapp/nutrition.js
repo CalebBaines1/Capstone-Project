@@ -162,10 +162,76 @@ function updateCalories(element, change) {
     caloriesConsumedDisplay.innerHTML = ("Total number of calories consumed: " + caloriesConsumed)
 }
 
+/**
+* Generate chart based off user's selected food
+ */
+ function generateChart() {
+     let recommendedCalories;
+     if(document.getElementById("male-select").checked) {
+         recommendedCalories = 2500;
+         gender = "male";
+     }
+     if(document.getElementById("female-select").checked) {
+         recommendedCalories = 2000;
+         gender = "female";
+     }
+     calorieChart.innerHTML = "The selected gender is " + gender + " and that gender should eat " + recommendedCalories + " per day.";
+ }
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(loadChart);
+
+function loadChart() {
+    let recommendedCalories;
+    let gender;
+
+    if(document.getElementById("male-select").checked) {
+         recommendedCalories = 2500;
+         gender = "male";
+    }
+    if(document.getElementById("female-select").checked) {
+        recommendedCalories = 2000;
+        gender = "female";
+    }
+
+    const remainingCalories = recommendedCalories - caloriesConsumed;
+
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Food');
+    data.addColumn('number', 'Calories');
+    
+    let foodBank = foodBankList.childNodes;
+    for (let food of foodBank) {
+        let foodName = food.getAttribute("foodname");
+        let foodCalories = parseInt(food.getAttribute("calories"));
+        data.addRow([foodName, foodCalories]);
+    }
+
+    let title = "A typical " + gender + " should eat " + recommendedCalories + " calories in a day.";
+
+    if (remainingCalories < 0) {
+        title += " You have consumed " + (remainingCalories * -1) + " extra calories!";
+    }
+    else {
+        title += " You can consume " + remainingCalories + " more calories to meet the daily average.";
+        data.addRow(["Remaining calories:", remainingCalories]);
+    }
+
+    const options = {
+    'title': title,
+    'width':600,
+    'height':600
+    };
+
+    const chart = new google.visualization.PieChart(calorieChart);
+    chart.draw(data, options);
+}
+
 const search = document.getElementById('search');
 const matchList = document.getElementById('match-list');
 const foodBankList = document.getElementById('food-bank-list');
 const caloriesConsumedDisplay = document.getElementById("calorieNumberDisplay");
+const calorieChart = document.getElementById("calorie-chart")
 let caloriesConsumed = 0;
 
 search.addEventListener('input', () => getFoodSearchJSON(search.value));
