@@ -70,10 +70,12 @@ function addToDOM(response) {
             break;
         }
         let a = document.createElement("li");
-        a.innerText = "Common Food:" + food.food_name;
+        let foodName = "Common Food: " + food.food_name;
+        a.innerText = foodName;
         a.setAttribute("type", "common");
         a.setAttribute("query", food.food_name);
-        a.setAttribute("onclick", 'printCalories(this);')
+        a.setAttribute("foodName", foodName);
+        a.setAttribute("onclick", 'addToFoodBank(this)');
         matchList.appendChild(a);
         i += 1;
     }
@@ -83,10 +85,12 @@ function addToDOM(response) {
             break;
         }
         let a = document.createElement("li");
-        a.innerText = food.brand_name + " " + food.food_name;
+        let foodName = food.brand_name + " " + food.food_name;
+        a.innerText = foodName;
         a.setAttribute("type", "branded");
         a.setAttribute("id", food.nix_item_id);
-        a.setAttribute("onclick", 'printCalories(this);')
+        a.setAttribute("foodName", foodName);
+        a.setAttribute("onclick", 'addToFoodBank(this)');
         matchList.appendChild(a);
         j += 1;
     }
@@ -95,26 +99,65 @@ function addToDOM(response) {
 /**
 * Retrieve nutrition info for food that user clicks 
  */
-async function printCalories(element) {
+async function getCalories(element) {
     let type = element.getAttribute("type");
-    console.log(type);
     if (type == "common") {
         let query = element.getAttribute("query");
         let nutrition = await getCommon(query)
         console.log(nutrition);
-        let calories = nutrition.foods[0].nf_calories;
+        let calories = await nutrition.foods[0].nf_calories;
         console.log("This item has " + calories + " calories.");
+        return await calories;
     }
     if (type == "branded") {
         let id = element.getAttribute("id");
         let nutrition = await getBranded(id);
         console.log(nutrition);
-        let calories = nutrition.foods[0].nf_calories;
+        let calories = await nutrition.foods[0].nf_calories;
         console.log("This item has " + calories + " calories.");
+        return await calories;
     }
+}
+
+/**
+* Add a clicked food to the food bank
+ */
+async function addToFoodBank(element) {
+    let copy = element.cloneNode(true);
+    copy.setAttribute("calories", await getCalories(element));
+    copy.setAttribute("onclick", "removeFromFoodBank(this)");
+
+    foodBankList.appendChild(copy);
+    updateCalories(copy, "+");
+}
+
+function removeFromFoodBank(element) {
+    updateCalories(element, "-");
+    element.remove();
+}
+
+function clearFoodBank() {
+    foodBankList.innerHTML = '';
+    caloriesConsumed = 0;
+}
+
+function updateCalories(element, change) {
+    let thisFoodCalories = parseInt(element.getAttribute("calories"));
+    if (change == "+") {
+        console.log(thisFoodCalories + " calories are being added to the total.")
+        caloriesConsumed += thisFoodCalories;
+    }
+    else {
+        console.log(thisFoodCalories + " calories are being removed from the total.")
+        caloriesConsumed -= thisFoodCalories;
+    }
+    caloriesConsumedDisplay.innerHTML = ("Total number of calories consumed: " + caloriesConsumed)
 }
 
 const search = document.getElementById('search');
 const matchList = document.getElementById('match-list');
+const foodBankList = document.getElementById('food-bank-list');
+const caloriesConsumedDisplay = document.getElementById("calorieNumberDisplay");
+let caloriesConsumed = 0;
 
 search.addEventListener('input', () => getFoodSearchJSON(search.value));

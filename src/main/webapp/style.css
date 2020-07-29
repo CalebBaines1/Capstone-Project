@@ -68,3 +68,7 @@ li:hover,
 li:focus{
     color: rgb(99, 99, 99);
 }
+
+#calorieNumberDisplay {
+    font-size: 1.5rem;
+}
