@@ -52,6 +52,12 @@ section{
     text-align: center;
 }
 
+#avail-map-container {
+    width: 100vh;
+    height: 500px;
+    margin: auto;
+}
+
 #calorie-count-container h2 {
   margin-bottom: 4rem;
 }
