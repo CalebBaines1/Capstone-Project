@@ -70,10 +70,12 @@ function addToDOM(response) {
             break;
         }
         let a = document.createElement("li");
-        a.innerText = "Common Food: " + food.food_name;
+        let foodName = "Common Food: " + food.food_name;
+        a.innerText = foodName;
         a.setAttribute("type", "common");
         a.setAttribute("query", food.food_name);
-        a.setAttribute("onclick", 'printCalories(this);')
+        a.setAttribute("foodName", foodName);
+        a.setAttribute("onclick", 'addToFoodBank(this)');
         matchList.appendChild(a);
         i += 1;
     }
@@ -83,10 +85,12 @@ function addToDOM(response) {
             break;
         }
         let a = document.createElement("li");
-        a.innerText = food.brand_name + " " + food.food_name;
+        let foodName = food.brand_name + " " + food.food_name;
+        a.innerText = foodName;
         a.setAttribute("type", "branded");
         a.setAttribute("id", food.nix_item_id);
-        a.setAttribute("onclick", 'printCalories(this);')
+        a.setAttribute("foodName", foodName);
+        a.setAttribute("onclick", 'addToFoodBank(this)');
         matchList.appendChild(a);
         j += 1;
     }
@@ -95,26 +99,126 @@ function addToDOM(response) {
 /**
 * Retrieve nutrition info for food that user clicks 
  */
-async function printCalories(element) {
+async function getCalories(element) {
     let type = element.getAttribute("type");
-    console.log(type);
     if (type == "common") {
         let query = element.getAttribute("query");
         let nutrition = await getCommon(query)
         console.log(nutrition);
-        let calories = nutrition.foods[0].nf_calories;
+        let calories = await nutrition.foods[0].nf_calories;
         console.log("This item has " + calories + " calories.");
+        return await calories;
     }
     if (type == "branded") {
         let id = element.getAttribute("id");
         let nutrition = await getBranded(id);
         console.log(nutrition);
-        let calories = nutrition.foods[0].nf_calories;
+        let calories = await nutrition.foods[0].nf_calories;
         console.log("This item has " + calories + " calories.");
+        return await calories;
     }
+}
+
+/**
+* Add a clicked food to the food bank
+ */
+async function addToFoodBank(element) {
+    let copy = element.cloneNode(true);
+    copy.setAttribute("calories", await getCalories(element));
+    copy.setAttribute("onclick", "removeFromFoodBank(this)");
+    foodBankList.appendChild(copy);
+    updateCalories(copy, "+");
+}
+
+/**
+* Remove the clicked food from the user food bank
+*/
+function removeFromFoodBank(element) {
+    updateCalories(element, "-");
+    element.remove();
+}
+
+/**
+* If the button is clicked, all food is removed from the food bank and the calorie counter is reset to 0
+*/
+function clearFoodBank() {
+    foodBankList.innerHTML = '';
+    caloriesConsumed = 0;
+}
+
+/**
+* Update the total calorie count depending on if the user is adding to the food bank or removing food from it 
+*/
+function updateCalories(element, change) {
+    let thisFoodCalories = parseInt(element.getAttribute("calories"));
+    if (change == "+") {
+        console.log(thisFoodCalories + " calories are being added to the total.")
+        caloriesConsumed += thisFoodCalories;
+    }
+    else {
+        console.log(thisFoodCalories + " calories are being removed from the total.")
+        caloriesConsumed -= thisFoodCalories;
+    }
+    caloriesConsumedDisplay.innerHTML = ("Total number of calories consumed: " + caloriesConsumed)
+}
+
+/**
+* Load chart based off user's selected food
+ */
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(loadChart);
+
+function loadChart() {
+    let recommendedCalories;
+    let gender;
+
+    if(document.getElementById("male-select").checked) {
+         recommendedCalories = 2500;
+         gender = "male";
+    }
+    if(document.getElementById("female-select").checked) {
+        recommendedCalories = 2000;
+        gender = "female";
+    }
+
+    const remainingCalories = recommendedCalories - caloriesConsumed;
+
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Food');
+    data.addColumn('number', 'Calories');
+    
+    let foodBank = foodBankList.childNodes;
+    for (let food of foodBank) {
+        let foodName = food.getAttribute("foodname");
+        let foodCalories = parseInt(food.getAttribute("calories"));
+        data.addRow([foodName, foodCalories]);
+    }
+
+    let title = "A typical " + gender + " should eat " + recommendedCalories + " calories in a day.";
+
+    if (remainingCalories < 0) {
+        title += " You have consumed " + (remainingCalories * -1) + " extra calories!";
+    }
+    else {
+        title += " You can consume " + remainingCalories + " more calories to meet the daily average.";
+        data.addRow(["Remaining calories:", remainingCalories]);
+    }
+
+    const options = {
+    'title': title,
+    'width':600,
+    'height':600
+    };
+
+    const chart = new google.visualization.PieChart(calorieChart);
+    chart.draw(data, options);
 }
 
 const search = document.getElementById('search');
 const matchList = document.getElementById('match-list');
+const foodBankList = document.getElementById('food-bank-list');
+const caloriesConsumedDisplay = document.getElementById("calorieNumberDisplay");
+const calorieChart = document.getElementById("calorie-chart")
+let caloriesConsumed = 0;
 
 search.addEventListener('input', () => getFoodSearchJSON(search.value));

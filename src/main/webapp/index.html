@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Capstone Project</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="config.js"></script>
     <script src="script.js"></script>
   </head>
@@ -17,6 +18,26 @@
                     <input type = "text" id = "search" class = "form-control form-control-lg" placeholder = "Search for food"/>
                 </div>
                 <div id = "match-list"></div>
+                <div id = "food-bank">
+                    <h3>Food Bank</h3>
+                    <h4>Foods that you select will appear here!</h4>
+                    <div id = "food-bank-list"></div>
+                    <button onclick="clearFoodBank()">Clear the food bank!</button>
+                    <div id = "calorieNumberDisplay"></div>
+                    <div id = "genderSelect">
+                        <h3>Generate a chart to visually view caloric intake!</h3>
+                        <form>
+                            <input name="genderSelect" type="radio" value="male" id="male-select" /> Male 
+                            <br /> 
+                            <input name="genderSelect" type="radio" value="female" id="female-select" /> Female 
+                            <br />
+                            <button onclick = "loadChart()" type="button" value="Submit">Update Chart!</button>
+                        </form>
+                    </div>
+                </div>
+                <div class = "container">
+                    <div id = "calorie-chart"></div>
+                </div>
             </div>
         </section>
 

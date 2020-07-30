@@ -68,3 +68,22 @@ li:hover,
 li:focus{
     color: rgb(99, 99, 99);
 }
+
+#calorieNumberDisplay {
+    font-size: 1.5rem;
+}
+
+#calorie-count-container {
+    margin: auto;
+}
+
+#avail-map-container {
+    width: 100vh;
+    height: 500px;
+    margin: auto;
+}
+
+#calorie-chart {
+    max-width: 600px;
+    margin: auto;
+}
