@@ -39,6 +39,7 @@ function geocodeLocation(geocoder, resultsMap) {
       var marker = new google.maps.Marker({
         map: resultsMap,
         position: results[0].geometry.location,
+        title: "Your Location"
       });
 
       buildRequest(results[0].geometry.location);
