@@ -18,39 +18,7 @@ var infowindow;
 
   map = new google.maps.Map(
     document.getElementById('avail-map-container'), {zoom: 16, center: mountainview});
-
-  var geocoder = new google.maps.Geocoder();
-
-  document.getElementById("submit").addEventListener("click", function() {
-    geocodeLocation(geocoder, map);
-  });
-  
 }
-
-/**
- * Convert Location into coordinates.
- */
-/*
-function geocodeLocation(geocoder, resultsMap) {
-  var address = document.getElementById("address").value;
-  geocoder.geocode({ address: address }, function(results, status) {
-    if (status === "OK") {
-      resultsMap.setCenter(results[0].geometry.location);
-      resultsMap.setZoom(16);
-      var marker = new google.maps.Marker({
-        map: resultsMap,
-        position: results[0].geometry.location,
-        title: "Your Location"
-      });
-
-      buildRequest(results[0].geometry.location);
-
-    } else {
-      alert("Geocode was unsuccessful : " + status);
-    }
-  });
-}
-*/
 
 /**
  * Set user-entered address on map.
