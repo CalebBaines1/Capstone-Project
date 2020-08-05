@@ -30,6 +30,7 @@ var infowindow;
 /**
  * Convert Location into coordinates.
  */
+/*
 function geocodeLocation(geocoder, resultsMap) {
   var address = document.getElementById("address").value;
   geocoder.geocode({ address: address }, function(results, status) {
@@ -48,6 +49,23 @@ function geocodeLocation(geocoder, resultsMap) {
       alert("Geocode was unsuccessful : " + status);
     }
   });
+}
+*/
+
+/**
+ * Set user-entered address on map.
+ */
+function setAddress(autocomplete) {
+  var place = autocomplete.getPlace();
+  if (!place.geometry) {
+    window.alert("No details available for input: '" + place.name + "'");
+    return;
+  }
+
+  map.setCenter(place.geometry.location);
+  map.setZoom(15);
+
+  buildRequest(place.geometry.location);
 }
 
 /**
