@@ -18,6 +18,19 @@ var infowindow;
 
   map = new google.maps.Map(
     document.getElementById('avail-map-container'), {zoom: 16, center: mountainview});
+
+  var input = document.getElementById('address');
+
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.bindTo('bounds', map);
+
+  autocomplete.setFields(
+    ['address_components', 'geometry', 'icon', 'name']);
+
+  autocomplete.addListener('place_changed', function() {
+    setAddress(autocomplete);
+  });
 }
 
 /**
