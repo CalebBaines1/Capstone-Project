@@ -214,10 +214,6 @@ function loadChart() {
     chart.draw(data, options);
 }
 
-function hideChart() {
-    calorieChart.innerHTML = '';
-}
-
 const search = document.getElementById('search');
 const matchList = document.getElementById('match-list');
 const foodBankList = document.getElementById('food-bank-list');
