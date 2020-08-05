@@ -166,7 +166,7 @@ function updateCalories(element, change) {
 * Load chart based off user's selected food
  */
 google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(loadChart);
+//google.charts.setOnLoadCallback(loadChart);
 
 function loadChart() {
     let recommendedCalories;
@@ -212,6 +212,10 @@ function loadChart() {
 
     const chart = new google.visualization.PieChart(calorieChart);
     chart.draw(data, options);
+}
+
+function hideChart() {
+    calorieChart.innerHTML = '';
 }
 
 const search = document.getElementById('search');
