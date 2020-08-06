@@ -8,6 +8,7 @@ var map;
 var service;
 var infowindow;
 
+
 /**
  * Attach initMap function to the window.
  */
@@ -19,17 +20,6 @@ var infowindow;
     document.getElementById('avail-map-container'), {zoom: 16, center: mountainview});
 
   var geocoder = new google.maps.Geocoder();
-
-  var request = {
-    location: mountainview,
-    radius: '500',
-    keyword: 'healthy',
-    type: ['restaurant'],
-    fields: ['name', 'formatted_address', 'geometry']
-  };
-
-  service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(request, callback);
 
   document.getElementById("submit").addEventListener("click", function() {
     geocodeLocation(geocoder, map);
@@ -46,14 +36,34 @@ function geocodeLocation(geocoder, resultsMap) {
     if (status === "OK") {
       resultsMap.setCenter(results[0].geometry.location);
       resultsMap.setZoom(16);
-      var mark = new google.maps.Marker({
+      var marker = new google.maps.Marker({
         map: resultsMap,
-        position: results[0].geometry.location
+        position: results[0].geometry.location,
+        title: "Your Location"
       });
+
+      buildRequest(results[0].geometry.location);
+
     } else {
       alert("Geocode was unsuccessful : " + status);
     }
   });
+}
+
+/**
+ * Create Place request.
+ */
+function buildRequest(latlng) {
+    var request = {
+    location: latlng,
+    radius: '500',
+    keyword: 'healthy',
+    type: ['restaurant'],
+    fields: ['name', 'formatted_address', 'geometry']
+  };
+
+  service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(request, callback);
 }
 
 function callback(results, status) {
