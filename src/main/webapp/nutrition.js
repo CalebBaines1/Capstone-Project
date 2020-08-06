@@ -166,7 +166,6 @@ function updateCalories(element, change) {
 * Load chart based off user's selected food
  */
 google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(loadChart);
 
 function loadChart() {
     let recommendedCalories;
