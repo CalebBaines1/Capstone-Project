@@ -19,35 +19,34 @@ var infowindow;
   map = new google.maps.Map(
     document.getElementById('avail-map-container'), {zoom: 16, center: mountainview});
 
-  var geocoder = new google.maps.Geocoder();
+  var input = document.getElementById('address');
 
-  document.getElementById("submit").addEventListener("click", function() {
-    geocodeLocation(geocoder, map);
+  var autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.bindTo('bounds', map);
+
+  autocomplete.setFields(
+    ['address_components', 'geometry', 'icon', 'name']);
+
+  autocomplete.addListener('place_changed', function() {
+    setAddress(autocomplete);
   });
-  
 }
 
 /**
- * Convert Location into coordinates.
+ * Set user-entered address on map.
  */
-function geocodeLocation(geocoder, resultsMap) {
-  var address = document.getElementById("address").value;
-  geocoder.geocode({ address: address }, function(results, status) {
-    if (status === "OK") {
-      resultsMap.setCenter(results[0].geometry.location);
-      resultsMap.setZoom(16);
-      var marker = new google.maps.Marker({
-        map: resultsMap,
-        position: results[0].geometry.location,
-        title: "Your Location"
-      });
+function setAddress(autocomplete) {
+  var place = autocomplete.getPlace();
+  if (!place.geometry) {
+    window.alert("No details available for input: '" + place.name + "'");
+    return;
+  }
 
-      buildRequest(results[0].geometry.location);
+  map.setCenter(place.geometry.location);
+  map.setZoom(15);
 
-    } else {
-      alert("Geocode was unsuccessful : " + status);
-    }
-  });
+  buildRequest(place.geometry.location);
 }
 
 /**
