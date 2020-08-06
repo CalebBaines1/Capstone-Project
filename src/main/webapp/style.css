@@ -6,6 +6,10 @@
   position: relative;
 }
 
+body {
+    background: whitesmoke;
+}
+
 html{
     font-size: 10px;
     font-family: 'Roboto', sans-serif;
@@ -37,6 +41,7 @@ h2 {
   font-weight: 600;
   position: relative;
   margin-bottom: 1rem;
+  color: #6cc091;
 }
 
 h3 {
@@ -92,4 +97,12 @@ li:focus{
 #calorie-chart {
     max-width: 600px;
     margin: auto;
+}
+
+#match-list {
+    margin-bottom: 5rem;
+}
+
+#calorieNumberDisplay {
+    margin-bottom: 5rem;
 }
