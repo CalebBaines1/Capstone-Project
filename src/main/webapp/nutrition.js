@@ -205,6 +205,10 @@ function loadChart() {
 
     const options = {
     'title': title,
+    'backgroundColor': 'whitesmoke', // for the area outside the chartArea
+    'chartArea': {
+        'backgroundColor': 'whitesmoke'
+    },
     'width':600,
     'height':600
     };
